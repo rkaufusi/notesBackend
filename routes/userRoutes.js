@@ -12,4 +12,6 @@ router.post("/login", login);
 
 router.delete("/delete", deleteUser);
 
+//router.get("/:firstname", getNotes);
+
 module.exports = router;

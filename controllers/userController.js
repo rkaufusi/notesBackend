@@ -15,7 +15,7 @@ async function login(req, res) {
   res.send(result);
 }
 function deleteUser(req, res) {
-	//deleteUserDB()
+	deleteUserDB()
   res.send("delete user");
 }
 
