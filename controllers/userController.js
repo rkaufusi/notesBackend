@@ -12,11 +12,24 @@ function createUser(req, res) {
 async function login(req, res) {
 	let {email, password} = req.body;
 	let result = await loginDB(email, password);
-  res.send(result);
+	//console.log(result)
+  res.json({accessToken: result});
 }
+
 function deleteUser(req, res) {
 	deleteUserDB()
   res.send("delete user");
+}
+
+const verifyUser = async (req, res) => {
+	//console.log(req.body)
+	let data = req.body.userToken;
+	//console.log(data)
+
+	let isValidUser = await verifyUserDB(data);
+	if(isValidUser) res.json(true);
+	else res.json(false);
+	//res.json({isValidUser});
 }
 
 // helper methods
@@ -37,8 +50,9 @@ async function createUserDB(firstname, lastname, email, password) {
 
 async function loginDB(email, password){
 	try {
-		let [[user]] = await pool.query(`SELECT * FROM users WHERE email = ?`, [email]);
-		const isValidUser = bcrypt.compare(password, user.password);
+		let [user] = await pool.query(`SELECT * FROM users WHERE email = ?`, [email]);
+		console.log(user);
+		const isValidUser = bcrypt.compare(password, user[0].password);
 		if(isValidUser){
 			const token = jwt.sign({userid: user.userid}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "1d"});
 			return token;
@@ -54,5 +68,12 @@ async function deleteUserDB(id){
 	return;
 }
 
+const verifyUserDB = async (token) => {
+	const isValidUser = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+	console.log(isValidUser);
+	//console.log('is this user valid' + isValidUser);
+	return isValidUser;
+}
 
-module.exports = { createUser, login, deleteUser };
+
+module.exports = { createUser, login, deleteUser, verifyUser };
