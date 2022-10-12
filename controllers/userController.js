@@ -74,5 +74,4 @@ const verifyUserDB = async (token) => {
 	return isValidUser;
 }
 
-
 module.exports = { createUser, login, deleteUser, verifyUser };

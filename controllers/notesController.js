@@ -5,27 +5,33 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const createNote = async (req, res) => {
-  let { notetitle, notebody, userid } = req.body;
-  // helper function
-  createNoteDB(notetitle, notebody, userid);
+  let { notetitle, notebody, token } = req.body;
+	console.log('my user token' + notetitle);
+	const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  const { userid } = decoded;
+  await createNoteDB(notetitle, notebody, userid);
   res.send("note created");
 };
 const deleteNote = async (req, res) => {
   let { noteid } = req.body;
-	console.log(req.body)
+  console.log(req.body);
   console.log(noteid);
   await deleteNoteDB(noteid);
   res.send("note deleted");
 };
 const editNote = async (req, res) => {
   let { notetitle, notebody, noteid } = req.body;
-	await editNoteDB(notetitle, notebody, noteid);
+  await editNoteDB(notetitle, notebody, noteid);
   res.send("note editied");
 };
 
 const getNotes = async (req, res) => {
-  let id = 1;
-  let notes = await getNoteDB(id);
+  let { token } = req.query;
+  console.log("my data ", token);
+  const userToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  const { userid } = userToken;
+	console.log(userid)
+  let notes = await getNoteDB(userid);
   res.send(notes);
 };
 // helper functions
