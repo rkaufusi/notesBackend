@@ -12,13 +12,13 @@ const createNote = async (req, res) => {
 };
 const deleteNote = async (req, res) => {
   let { noteid } = req.body;
+	console.log(req.body)
   console.log(noteid);
   await deleteNoteDB(noteid);
   res.send("note deleted");
 };
 const editNote = async (req, res) => {
   let { notetitle, notebody, noteid } = req.body;
-  console.log(noteid, notetitle, notebody);
 	await editNoteDB(notetitle, notebody, noteid);
   res.send("note editied");
 };
