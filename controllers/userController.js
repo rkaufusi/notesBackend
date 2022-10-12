@@ -54,7 +54,7 @@ async function loginDB(email, password){
 		console.log(user);
 		const isValidUser = bcrypt.compare(password, user[0].password);
 		if(isValidUser){
-			const token = jwt.sign({userid: user.userid}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "1d"});
+			const token = jwt.sign({userid: user[0].userid}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "1d"});
 			return token;
 		}
 	} catch(error) {
@@ -71,7 +71,6 @@ async function deleteUserDB(id){
 const verifyUserDB = async (token) => {
 	const isValidUser = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 	console.log(isValidUser);
-	//console.log('is this user valid' + isValidUser);
 	return isValidUser;
 }
 
