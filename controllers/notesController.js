@@ -1,5 +1,4 @@
 const pool = require("../database.js");
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -13,8 +12,6 @@ const createNote = async (req, res) => {
 };
 const deleteNote = async (req, res) => {
   let { noteid } = req.body;
-  console.log(req.body);
-  console.log(noteid);
   await deleteNoteDB(noteid);
   res.send("note deleted");
 };

@@ -13,4 +13,4 @@ app.use(cors());
 app.use("/", userRoutes);
 app.use("/notes", notesRoutes);
 
-app.listen(process.env.PORT, (req, res) => console.log(process.env.PORT));
+app.listen(process.env.PORT, (req, res) => console.log(`Listening on ${process.env.PORT}`));

@@ -12,7 +12,6 @@ function createUser(req, res) {
 async function login(req, res) {
 	let {email, password} = req.body;
 	let result = await loginDB(email, password);
-	//console.log(result)
   res.json({accessToken: result});
 }
 
@@ -20,7 +19,6 @@ async function deleteUser(req, res) {
 	let { token } = req.query;
 	const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
   const { userid } = decoded;
-	console.log(' users id ' + userid);
 	await deleteUserDB(userid);
   res.send("deleted user");
 }
@@ -51,7 +49,6 @@ async function createUserDB(firstname, lastname, email, password) {
 async function loginDB(email, password){
 	try {
 		let [user] = await pool.query(`SELECT * FROM users WHERE email = ?`, [email]);
-		console.log(user);
 		const isValidUser = bcrypt.compare(password, user[0].password);
 		if(isValidUser){
 			const token = jwt.sign({userid: user[0].userid}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "1d"});
@@ -70,7 +67,6 @@ async function deleteUserDB(id){
 
 const verifyUserDB = async (token) => {
 	const isValidUser = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-	console.log(isValidUser);
 	return isValidUser;
 }
 
