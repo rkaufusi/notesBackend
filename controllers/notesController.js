@@ -6,7 +6,6 @@ dotenv.config();
 
 const createNote = async (req, res) => {
   let { notetitle, notebody, token } = req.body;
-	console.log('my user token' + notetitle);
 	const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
   const { userid } = decoded;
   await createNoteDB(notetitle, notebody, userid);
@@ -27,10 +26,8 @@ const editNote = async (req, res) => {
 
 const getNotes = async (req, res) => {
   let { token } = req.query;
-  console.log("my data ", token);
   const userToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
   const { userid } = userToken;
-	console.log(userid)
   let notes = await getNoteDB(userid);
   res.send(notes);
 };
@@ -53,7 +50,6 @@ const getNoteDB = async (userid) => {
     let notes = await pool.query(`SELECT * FROM notes WHERE userid = ?`, [
       userid,
     ]);
-    console.log(notes[0]);
     return notes[0];
   } catch (error) {
     console.log(error);

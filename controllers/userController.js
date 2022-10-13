@@ -16,20 +16,20 @@ async function login(req, res) {
   res.json({accessToken: result});
 }
 
-function deleteUser(req, res) {
-	deleteUserDB()
-  res.send("delete user");
+async function deleteUser(req, res) {
+	let { token } = req.query;
+	const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  const { userid } = decoded;
+	console.log(' users id ' + userid);
+	await deleteUserDB(userid);
+  res.send("deleted user");
 }
-
+//7SKCKn77 or + *
 const verifyUser = async (req, res) => {
-	//console.log(req.body)
 	let data = req.body.userToken;
-	//console.log(data)
-
 	let isValidUser = await verifyUserDB(data);
 	if(isValidUser) res.json(true);
 	else res.json(false);
-	//res.json({isValidUser});
 }
 
 // helper methods
@@ -64,7 +64,7 @@ async function loginDB(email, password){
 }
 
 async function deleteUserDB(id){
-	await pool.query(`DELETE FROM users WHERE id = ?`, [id]);
+	await pool.query(`DELETE FROM users WHERE userid = ?`, [id]);
 	return;
 }
 
