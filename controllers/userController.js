@@ -4,25 +4,24 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
 
-function createUser(req, res) {
+const createUser = async (req, res) => {
   let { firstname, lastname, email, password } = req.body;
   createUserDB(firstname, lastname, email, password);
   res.send("create user");
 }
-async function login(req, res) {
+const login = async (req, res) => {
 	let {email, password} = req.body;
 	let result = await loginDB(email, password);
   res.json({accessToken: result});
 }
-
-async function deleteUser(req, res) {
+const deleteUser = async (req, res) => {
 	let { token } = req.query;
 	const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
   const { userid } = decoded;
 	await deleteUserDB(userid);
   res.send("deleted user");
 }
-//7SKCKn77 or + *
+
 const verifyUser = async (req, res) => {
 	let data = req.body.userToken;
 	let isValidUser = await verifyUserDB(data);
