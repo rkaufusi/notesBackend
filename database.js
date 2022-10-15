@@ -23,7 +23,7 @@ pool.query(`CREATE TABLE if not exists users (
 pool.query(`CREATE TABLE if not exists notes (
 		noteid int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 		notetitle varchar(255),
-		notebody varchar(255),
+		notebody text,
 		userid int,
 		FOREIGN KEY (userid) REFERENCES users(userid) ON DELETE CASCADE
 	)`);
