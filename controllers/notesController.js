@@ -8,17 +8,17 @@ const createNote = async (req, res) => {
 	const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
   const { userid } = decoded;
   await createNoteDB(notetitle, notebody, userid);
-  res.send("note created");
+  res.status(200).send("note created");
 };
 const deleteNote = async (req, res) => {
   let { noteid } = req.body;
   await deleteNoteDB(noteid);
-  res.send("note deleted");
+  res.status(200).send("note deleted");
 };
 const editNote = async (req, res) => {
   let { notetitle, notebody, noteid } = req.body;
   await editNoteDB(notetitle, notebody, noteid);
-  res.send("note editied");
+  res.status(200).send("note editied");
 };
 
 const getNotes = async (req, res) => {
@@ -26,7 +26,7 @@ const getNotes = async (req, res) => {
   const userToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
   const { userid } = userToken;
   let notes = await getNoteDB(userid);
-  res.send(notes);
+  res.status(200).send(notes);
 };
 // helper functions
 

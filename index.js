@@ -12,5 +12,13 @@ app.use(cors());
 
 app.use("/", userRoutes);
 app.use("/notes", notesRoutes);
+/*
+app.use((err, req, res, next) => {
+	console.log("we're at the error")
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
+});*/
 
-app.listen(process.env.PORT, (req, res) => console.log(`Listening on ${process.env.PORT}`));
+app.listen(process.env.PORT, (req, res) =>
+  console.log(`Listening on ${process.env.PORT}`)
+);

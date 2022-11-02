@@ -19,13 +19,13 @@ const deleteUser = async (req, res) => {
 	const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
   const { userid } = decoded;
 	await deleteUserDB(userid);
-  res.send("deleted user");
+  res.status(200);
 }
 
 const verifyUser = async (req, res) => {
 	let data = req.body.userToken;
 	let isValidUser = await verifyUserDB(data);
-	if(isValidUser) res.json(true);
+	if(isValidUser) res.status(200).json(true);
 	else res.json(false);
 }
 
@@ -38,7 +38,7 @@ async function createUserDB(firstname, lastname, email, password) {
 			VALUES (?, ?, ?, ?)`,
 			[firstname, lastname, email, encryptedPassword]
 		);
-		return;
+		res.status(200);
 	} catch(error) {
 		console.log(error);
 		return error;
